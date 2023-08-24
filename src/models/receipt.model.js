@@ -3,9 +3,13 @@ const sequelize = require('../db');
 const {ProductInReceipt} = require('./productInReceipt.model');
 
 const Receipt = sequelize.define('receipt', {
+  id: {
+    primaryKey: true,
+    type: DataTypes.STRING
+  },
   number: {
+    autoIncrement: true,
     type: DataTypes.INTEGER,
-    defaultValue: sequelize.literal('nextval(\'receipt_number_seq\')'),
   },
   date: {
     type: DataTypes.DATE,

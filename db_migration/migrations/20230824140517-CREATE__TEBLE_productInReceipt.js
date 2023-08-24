@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       receipt_id : {
-        type: Sequelize.DataTypes.INTEGER,
+        type: Sequelize.DataTypes.STRING,
         references: {
           model: {
             tableName: 'receipt',

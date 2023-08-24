@@ -1,13 +1,13 @@
 const { Receipt } = require('../models/receipt.model');
-import sequelize from '../db';
+const  uniqid =  require('uniqid');
 
 class ReceiptController {
   async createReceipt(req, res) {
 
     try {
       const newReceipt = await Receipt.create({
+        id: uniqid(),
         date: null,
-        number: sequelize.literal('nextval(\'receipt_number_seq\')'),
         total: 0,
       });
 
