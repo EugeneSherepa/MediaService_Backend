@@ -5,7 +5,6 @@ class ReceiptController {
 
     try {
       const newReceipt = await Receipt.create({
-        number: 0,
         date: null,
         total: 0,
       });
@@ -27,16 +26,13 @@ class ReceiptController {
     }
   }
 
-  async updateLastReceiptTotalAnddate(req, res) {
-    const { total } = req.body;
-    const date = new Date()
+  async updateLastReceiptTotal(req, res) {
+    const { receipt_id, total } = req.body;
     try {
-      const lastReceipt = await Receipt.findOne({
-        order: [['number', 'DESC']],
-      });
+      const receiptToUpdate = await Receipt.findByPk(receipt_id);
 
-      if (lastReceipt) {
-        await lastReceipt.update({ total, date: date });
+      if (receiptToUpdate) {
+        await receiptToUpdate.update({ total });
         res.json({ message: 'Receipt total of the last receipt updated successfully.' });
       } else {
         res.status(404).json({ error: 'No receipts found.' });

@@ -1,9 +1,10 @@
 const { ProductInReceipt } = require('../models/productInReceipt.model');
 const { Receipt } = require('../models/receipt.model');
+const { Product } = require('../models/product.model');
 
 class ProductInReceiptController {
   async addProductToReceipt(req, res) {
-    const { id, price } = req.body;
+    const { id, receipt_id, price } = req.body;
 
     try {
       const latestReceipt = await Receipt.findOne({
@@ -12,7 +13,7 @@ class ProductInReceiptController {
 
       if (latestReceipt) {
         const newProduct = await ProductInReceipt.create({
-          receipt_id: latestReceipt.id,
+          receipt_id: receipt_id,
           product_id: id,
           quantity: 1,
           price,
@@ -35,18 +36,23 @@ class ProductInReceiptController {
       if (newQuantity === null || newQuantity === undefined) {
         throw new Error('Invalid newQuantity value');
       }
-
+    
       const productInReceipt = await ProductInReceipt.findOne({
         where: { product_id },
       });
-
+    
+      const product = await Product.findOne({
+        where: { id: product_id },
+      });
+    
       if (productInReceipt) {
-        await productInReceipt.update({ quantity: newQuantity });
-
+        const newPrice = product.price * newQuantity;
+        await productInReceipt.update({ quantity: newQuantity, price: newPrice });
+    
         if (newQuantity === 0) {
           await productInReceipt.destroy();
         }
-
+    
         res.json({ message: 'Product quantity updated successfully.' });
       } else {
         res.status(404).json({ error: 'Product not found in receipt.' });
@@ -88,18 +94,23 @@ class ProductInReceiptController {
 
   async clearProductsInReceipt(req, res) {
     try {
-      const latestReceipt = await Receipt.findOne({
-        order: [['id', 'DESC']],
-      });
+      const { receipt_id, total } = req.body;
 
-      if (latestReceipt) {
+      const receiptToUpdate = await Receipt.findByPk(receipt_id);
+  
+      if (receiptToUpdate && receiptToUpdate.date === null) {
+        const closeDate = new Date();
+
+        await receiptToUpdate.update({ date: closeDate, total: total });
+        
         await ProductInReceipt.destroy({
-          where: { receipt_id: latestReceipt.id },
+          where: { receipt_id: receiptToUpdate.id },
         });
-
-        res.json({ message: 'All products in receipt cleared successfully.' });
+  
+  
+        res.json({ message: 'Receipt total of the last receipt updated successfully. All products in receipt cleared successfully.' });
       } else {
-        res.status(404).json({ error: 'No receipts found.' });
+        res.status(404).json({ error: 'No receipts found or the latest receipt already has a date.' });
       }
     } catch (error) {
       console.error(error);

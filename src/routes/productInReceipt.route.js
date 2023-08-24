@@ -1,6 +1,6 @@
 const Router = require('express');
 const router = new Router();
-const ProdInReceiptController = require('../controller/product_in_receipt.controller');
+const ProdInReceiptController = require('../controllers/product_in_receipt.controller');
 
 router.post('/prodreceipt', ProdInReceiptController.addProductToReceipt);
 router.get('/prodreceipt', ProdInReceiptController.getProductInReceipt);

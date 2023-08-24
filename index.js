@@ -1,8 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-const productRouter = require('./routes/product.routes');
-const receiptRouter = require('./routes/receipt.route');
-const productInReceiptRouter = require('./routes/productInReceipt');
+const productRouter = require('./src/routes/product.route');
+const receiptRouter = require('./src/routes/receipt.route');
+const productInReceiptRouter = require('./src/routes/productInReceipt.route');
+
+require('dotenv').config();
 
 const PORT = process.env.PORT || 8080;
 
