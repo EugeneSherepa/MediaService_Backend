@@ -18,9 +18,6 @@ const Receipt = sequelize.define('receipt', {
 }, {
   tableName: 'receipt',
   timestamps: false,
-  defaultScope: {
-    order: [['id', 'ASC']],
-  },
 });
 
 Receipt.hasMany(ProductInReceipt, {
