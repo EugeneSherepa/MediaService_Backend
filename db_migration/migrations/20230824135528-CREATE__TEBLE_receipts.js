@@ -14,7 +14,6 @@ module.exports = {
       },
       number: {
         type: Sequelize.INTEGER,
-        defaultValue: Sequelize.literal('nextval(\'receipt_number_seq\')'),
       },
       date: {
         type: Sequelize.DATE,
