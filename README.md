@@ -4,7 +4,7 @@
 - `npm run dev` for development
 - default URL: http://localhost:8080
 
-Api url from host: [](https://media-service-api.onrender.com)
+Api url from host: [https://media-service-api.onrender.com]
 
 For migrating data to your local DB use **npm run db-init-all**
 
