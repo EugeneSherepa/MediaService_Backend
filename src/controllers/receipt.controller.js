@@ -1,4 +1,5 @@
 const { Receipt } = require('../models/receipt.model');
+import sequelize from '../db';
 
 class ReceiptController {
   async createReceipt(req, res) {
@@ -6,6 +7,7 @@ class ReceiptController {
     try {
       const newReceipt = await Receipt.create({
         date: null,
+        number: sequelize.literal('nextval(\'receipt_number_seq\')'),
         total: 0,
       });
 
