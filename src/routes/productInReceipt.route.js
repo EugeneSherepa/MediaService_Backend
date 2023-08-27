@@ -6,6 +6,6 @@ router.post('/prodreceipt', ProdInReceiptController.addProductToReceipt);
 router.get('/prodreceipt', ProdInReceiptController.getProductInReceipt);
 router.patch('/prodreceipt', ProdInReceiptController.updateProductQuantity);
 router.delete('/prodreceipt/:id', ProdInReceiptController.deleteProduct);
-router.delete('/prodreceiptall', ProdInReceiptController.clearProductsInReceipt);
+router.post('/prodreceiptall', ProdInReceiptController.closeReceipt);
 
 module.exports = router;

@@ -65,7 +65,9 @@ class ProductInReceiptController {
 
   async getProductInReceipt(req, res) {
     try {
-      const productsInReceipt = await ProductInReceipt.findAll();
+      const productsInReceipt = await ProductInReceipt.findAll({
+        order: [['id', 'ASC']]
+      });
       res.json(productsInReceipt);
     } catch (error) {
       console.error(error);
@@ -92,7 +94,7 @@ class ProductInReceiptController {
     }
   }
 
-  async clearProductsInReceipt(req, res) {
+  async closeReceipt(req, res) {
     try {
       const { receipt_id, total } = req.body;
 
@@ -103,11 +105,6 @@ class ProductInReceiptController {
 
         await receiptToUpdate.update({ date: closeDate, total: total });
         
-        await ProductInReceipt.destroy({
-          where: { receipt_id: receiptToUpdate.id },
-        });
-  
-  
         res.json({ message: 'Receipt total of the last receipt updated successfully. All products in receipt cleared successfully.' });
       } else {
         res.status(404).json({ error: 'No receipts found or the latest receipt already has a date.' });

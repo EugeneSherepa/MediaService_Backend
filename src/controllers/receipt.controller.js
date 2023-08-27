@@ -21,7 +21,7 @@ class ReceiptController {
   async getReceipts(req, res) {
     try {
       const receipts = await Receipt.findAll({
-        order: [['id', 'ASC']]
+        order: [['number', 'ASC']]
       });
       res.json(receipts);
     } catch (error) {
