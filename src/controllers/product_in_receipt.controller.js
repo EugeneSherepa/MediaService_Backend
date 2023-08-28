@@ -64,9 +64,13 @@ class ProductInReceiptController {
   }
 
   async getProductInReceipt(req, res) {
+    const lastReceipt = await Receipt.findOne({
+      where: { date: null}
+    })
+
     try {
       const productsInReceipt = await ProductInReceipt.findAll({
-        order: [['id', 'ASC']]
+        where: {receipt_id: lastReceipt.id}
       });
       res.json(productsInReceipt);
     } catch (error) {
